@@ -118,13 +118,18 @@ $RECYCLE.BIN/
 *.swp
 *.swo
 
-# Frontend (Next.js)
-frontend/.next/
-frontend/out/
-frontend/node_modules/
+# Frontend (Next.js) - Only ignore specific files/folders, not the entire frontend directory
+.next/
+out/
+*.tsbuildinfo
+
+# Frontend environment files
 frontend/.env
 frontend/.env.local
 frontend/.env.*.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
 
 # Build outputs
 *.pyc

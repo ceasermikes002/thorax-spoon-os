@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic
+requests
+neo-mamba
+prisma
+asyncpg
+spoon_ai

@@ -10,8 +10,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+# lib/ - COMMENTED OUT to allow frontend/lib/
+# lib64/ - COMMENTED OUT to allow frontend/lib/
 parts/
 sdist/
 var/
@@ -144,8 +144,8 @@ var/
 sdist/
 develop-eggs/
 .installed.cfg
-lib/
-lib64/
+# lib/ - COMMENTED OUT to allow frontend/lib/
+# lib64/ - COMMENTED OUT to allow frontend/lib/
 
 # Installer logs
 pip-log.txt

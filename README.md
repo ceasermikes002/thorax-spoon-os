@@ -157,6 +157,88 @@ AOL Guardian uses SpoonOS AI agents for:
 3. **DAO Governance Oversight**: Detect voting anomalies and treasury violations
 4. **Token Contract Auditing**: Continuous monitoring of mint/burn events
 
+## Limitations and Future Enhancements
+
+### Current Limitations
+
+**1. Read-Only Design**
+- Agent monitors but does not execute on-chain transactions
+- Cannot automatically pause contracts or withdraw funds
+- Alerts are informational only, requiring human action
+
+**2. Single Blockchain Support**
+- Currently supports Neo blockchain only
+- No cross-chain monitoring capabilities
+- Limited to Neo N3 architecture
+
+**3. Alert Fatigue Potential**
+- High-frequency events may generate many alerts
+- No built-in alert aggregation or throttling
+- Requires manual configuration of monitoring events
+
+**4. No Predictive Analytics**
+- Reactive detection (after event occurs)
+- Does not predict exploits before they happen
+- Limited historical pattern analysis
+
+**5. Manual Contract Registration**
+- Users must manually register each contract
+- No automatic discovery of related contracts
+- Requires ABI for full analysis capabilities
+
+### Planned Future Enhancements
+
+**Phase 1: Enhanced Automation (Q1 2025)**
+- Automated emergency response with pre-signed transactions
+- Contract pausing on critical breach detection
+- Multi-sig wallet integration for emergency fund withdrawal
+- Automated liquidity protection for DeFi protocols
+
+**Phase 2: Advanced AI Capabilities (Q2 2025)**
+- Predictive analytics using historical exploit patterns
+- Machine learning models for anomaly detection
+- Cross-contract pattern recognition
+- Collaborative learning between agent instances
+- Reduced false positive rates through continuous learning
+
+**Phase 3: Multi-Chain Expansion (Q3 2025)**
+- Ethereum mainnet and L2 support
+- Polygon, Arbitrum, Optimism integration
+- Cross-chain exploit detection
+- Unified dashboard for all chains
+
+**Phase 4: Ecosystem Integration (Q4 2025)**
+- Neo oracle integration for real-world data
+- Integration with popular DeFi protocols (DEXs, lending)
+- Smart contract deployment monitoring
+- Automated security scoring marketplace
+- Community threat intelligence sharing
+
+**Phase 5: Enterprise Features (2026)**
+- White-label solutions for protocols
+- Custom AI model training per contract type
+- SLA guarantees and insurance integration
+- Mobile apps (iOS/Android) with push notifications
+- Advanced analytics and reporting dashboard
+- API for third-party integrations
+
+### Why These Limitations Are Acceptable
+
+**Security-First Approach:**
+- Read-only design prevents the agent from being exploited
+- No private key handling eliminates key theft risk
+- Human-in-the-loop ensures critical decisions are reviewed
+
+**Focused Scope:**
+- Neo-native design allows deep integration
+- Specialized monitoring is more effective than generic solutions
+- Production-ready implementation over feature bloat
+
+**Hackathon Timeline:**
+- Core functionality prioritized for demo
+- Extensible architecture allows future additions
+- Proof of concept demonstrates viability
+
 ## Contributing
 
 This is a hackathon project. For issues or suggestions, please open a GitHub issue.

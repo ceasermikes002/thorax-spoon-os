@@ -5,6 +5,7 @@ from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from starlette.responses import StreamingResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -40,6 +41,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files for audio alerts
+alerts_dir = os.path.join(os.path.dirname(__file__), "alerts")
+os.makedirs(alerts_dir, exist_ok=True)
+app.mount("/audio", StaticFiles(directory=alerts_dir), name="audio")
+
 agent = AgentClient()
 
 @app.get("/")
@@ -257,15 +264,20 @@ async def notify(req: NotifyRequest):
     try:
         from app.services.email_service import EmailService
         mailer = EmailService()
-        subject = f"AOL Manual Alert: {c.get('contract_name') or c['contract_hash']}"
+        subject = f"Thorax Manual Alert: {c.get('contract_name') or c['contract_hash']}"
         body = req.message
         voice_path = None
+        voice_url = None
         if req.voice:
             try:
                 from app.services.tts_service import synthesize
                 voice_path = synthesize(req.message)
                 if voice_path:
-                    body += f"\nVoice: {voice_path}"
+                    # Convert file path to URL path
+                    import os
+                    filename = os.path.basename(voice_path)
+                    voice_url = f"/audio/{filename}"
+                    body += f"\nVoice alert generated"
             except Exception:
                 voice_path = None
         mailer.send(c["owner_email"], subject, body)
@@ -273,7 +285,7 @@ async def notify(req: NotifyRequest):
             emit_log({"type": "notify", "contract_id": req.contract_id, "voice": bool(req.voice)})
         except Exception:
             pass
-        return {"sent": True, "voice_path": voice_path}
+        return {"sent": True, "voice_url": voice_url, "voice_generated": bool(voice_path)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

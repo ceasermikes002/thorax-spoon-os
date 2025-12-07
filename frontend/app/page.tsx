@@ -38,6 +38,7 @@ export default function Home() {
   const [alertOpenId, setAlertOpenId] = useState<string>("");
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [alertVoice, setAlertVoice] = useState<boolean>(true);
+  const [voiceUrl, setVoiceUrl] = useState<string>("");
 // n
   const fetchContracts = async () => {
     const r = await fetch(`${BASE}/contracts`);
@@ -222,9 +223,18 @@ export default function Home() {
       const r = await fetch(`${BASE}/notify`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contract_id: id, message: alertMessage || "Security notice", voice: alertVoice }) });
       const j = await r.json();
       if (!("sent" in j)) throw new Error("notify failed");
-      toast.success("Alert sent");
-      setAlertOpenId("");
-      setAlertMessage("");
+
+      // If voice was generated, set the voice URL for playback
+      if (j.voice_url && j.voice_generated) {
+        setVoiceUrl(`${BASE}${j.voice_url}`);
+      }
+
+      toast.success(j.voice_generated ? "Alert sent with voice" : "Alert sent");
+      // Don't close dialog immediately if voice was generated
+      if (!j.voice_generated) {
+        setAlertOpenId("");
+        setAlertMessage("");
+      }
     } catch (e) {
       toast.error("Failed to send alert");
     }
@@ -762,6 +772,21 @@ export default function Home() {
                       </label>
                     </div>
 
+                    {voiceUrl && (
+                      <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-lg">🔊</span>
+                          <span className="text-sm font-medium">Voice Alert Generated</span>
+                        </div>
+                        <audio controls className="w-full" src={voiceUrl}>
+                          Your browser does not support the audio element.
+                        </audio>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          AI-generated voice alert using ElevenLabs
+                        </p>
+                      </div>
+                    )}
+
                     <div className="flex gap-2 pt-2">
                       <Button
                         onClick={() => sendAlert(alertOpenId)}
@@ -771,8 +796,12 @@ export default function Home() {
                         <Bell className="h-4 w-4 mr-2" />
                         Send Alert
                       </Button>
-                      <Button variant="outline" onClick={() => setAlertOpenId("")}>
-                        Cancel
+                      <Button variant="outline" onClick={() => {
+                        setAlertOpenId("");
+                        setAlertMessage("");
+                        setVoiceUrl("");
+                      }}>
+                        {voiceUrl ? "Close" : "Cancel"}
                       </Button>
                     </div>
                   </div>
